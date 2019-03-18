@@ -1,0 +1,19 @@
+{
+  "name": "restservice",
+  "version": "1.0.0",
+  "description": "Rest service voor domotica",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "rest",
+    "api",
+    "webservice"
+  ],
+  "author": "Dion van der Linden & Maarten Penning",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.4"
+  }
+}
