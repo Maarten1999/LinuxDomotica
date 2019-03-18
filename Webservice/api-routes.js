@@ -37,8 +37,14 @@ router.get('/lights/:id', function(req, res) {
     });
 });
 
-router.put('lights/:id', function(req, res) {
+router.put('lights/:id/:on', function(req, res) {
+    var id = req.id;
+    var on = req.on;
     
+    res.json({
+       success: true,
+       message: 'saved'
+    });
 });
 
 // Export API routes
