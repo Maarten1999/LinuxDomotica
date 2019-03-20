@@ -1,4 +1,4 @@
-package com.mpapps.myapplication;
+package com.mpapps.myapplication.Models;
 
 public class LightModel
 {

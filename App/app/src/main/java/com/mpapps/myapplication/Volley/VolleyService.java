@@ -5,11 +5,13 @@ import android.content.Context;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.mpapps.myapplication.LightModel;
+import com.mpapps.myapplication.Models.LightModel;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +27,7 @@ public class VolleyService
         this.listener = listener;
     }
 
-    public static VolleyService getsInstance(Context ctx, VolleyListener volleyListener){
+    public static VolleyService getInstance(Context ctx, VolleyListener volleyListener){
         if(sInstance == null){
             sInstance = new VolleyService(ctx, volleyListener);
         }
@@ -43,6 +45,18 @@ public class VolleyService
                     listener.getLightsError();
                 }
         );
+
+        requestQueue.add(request);
+    }
+
+    public void changeLight(String url){
+        JsonObjectRequest request = new JsonObjectRequest(
+                Request.Method.PUT, url, null,
+                response -> listener.changeLightSuccess(),
+                error -> listener.changeLightError()
+        );
+
+        requestQueue.add(request);
     }
 
     private static List<LightModel> parseJsonArray(JSONArray response){
@@ -50,8 +64,14 @@ public class VolleyService
 
         try{
             for (int i = 0; i < response.length(); i++) {
-                int id = response.getJSONObject(i).getInt("id");
+                JSONObject lightJson = response.getJSONObject(i);
+                int id = lightJson.getInt("id");
+                String name = lightJson.getString("name");
+                String color = lightJson.getString("color");
+                boolean state = lightJson.getBoolean("on");
 
+                LightModel lightModel = new LightModel(id, name, color, state);
+                lightModels.add(lightModel);
             }
         } catch (JSONException e) {
             e.printStackTrace();

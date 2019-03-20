@@ -1,14 +1,13 @@
 package com.mpapps.myapplication.Volley;
 
-import com.mpapps.myapplication.LightModel;
+import com.mpapps.myapplication.Models.LightModel;
 
 import java.util.List;
 
-interface VolleyListener
+public interface VolleyListener
 {
     void getLightsReceived(List<LightModel> lights);
     void getLightsError();
-    void changeLightState(boolean state);
-    void changeLightName(String name);
+    void changeLightSuccess();
     void changeLightError();
 }
