@@ -69,12 +69,15 @@ public class MainActivity extends AppCompatActivity implements LightRecyclerview
         });
         LayoutInflater inflater = getLayoutInflater();
         final View customView = inflater.inflate(R.layout.ip_dialog_layout, null);
+        TextView textView = customView.findViewById(R.id.ip_dialog_textView);
+        EditText editText = customView.findViewById(R.id.ip_dialog_editText);
+
         AlertDialog dialog = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.myDialog))
                 .setTitle("Change IP Address")
                 .setIcon(R.drawable.network_icon)
                 .setView(customView)
                 .setPositiveButton("OK", (dialogInterface, i) -> {
-                    EditText editText = customView.findViewById(R.id.ip_dialog_editText);
+                    //EditText editText = customView.findViewById(R.id.ip_dialog_editText);
                     sharedPrefEditor.putString(SHARED_PREF_IP, editText.getText().toString()).apply();
                     dialogInterface.dismiss();
                 })
@@ -86,7 +89,6 @@ public class MainActivity extends AppCompatActivity implements LightRecyclerview
         FloatingActionButton fab = findViewById(R.id.mainactivity_fab);
         fab.setOnClickListener((view -> {
            dialog.show();
-            TextView textView = customView.findViewById(R.id.ip_dialog_textView);
             String text = "Current IP-Address: " + sharedPreferences.getString(SHARED_PREF_IP, "Not Available");
             if(textView != null)
                 textView.setText(text);

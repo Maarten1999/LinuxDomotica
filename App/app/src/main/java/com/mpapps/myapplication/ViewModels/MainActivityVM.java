@@ -32,10 +32,10 @@ public class MainActivityVM extends AndroidViewModel implements VolleyListener
 
         lights = new MutableLiveData<>();
         List<LightModel> lightModels = new ArrayList<>();
-        lightModels.add(new LightModel(1, "1", "RED", false));
-        lightModels.add(new LightModel(2, "2", "GREEN", false));
-        lightModels.add(new LightModel(3, "3", "YELLOW", true));
-        lightModels.add(new LightModel(4, "4", "RED", false));
+        lightModels.add(new LightModel(1, "Light1", "RED", false));
+        lightModels.add(new LightModel(2, "Light2", "GREEN", false));
+        lightModels.add(new LightModel(3, "Light3", "YELLOW", true));
+        lightModels.add(new LightModel(4, "Light4", "RED", false));
         lights.postValue(lightModels);
         volleyService = VolleyService.getInstance(application, this);
     }
@@ -43,7 +43,7 @@ public class MainActivityVM extends AndroidViewModel implements VolleyListener
     //region Volley request methods
     public void refreshLights(){
         String restoredIP = sharedPreferences.getString(MainActivity.SHARED_PREF_IP, null);
-        String url = "http:// + " + restoredIP + "/lights";
+        String url = "http:// + " + restoredIP + ":8080/lights";
         if(restoredIP != null) {
             if(Patterns.IP_ADDRESS.matcher(restoredIP).matches())
                 volleyService.getLightsRequest(url);
@@ -56,10 +56,10 @@ public class MainActivityVM extends AndroidViewModel implements VolleyListener
 
     public void changeLightState(int lightId, boolean state){
         String restoredIP = sharedPreferences.getString(MainActivity.SHARED_PREF_IP, null);
-        String url = "http:// + " + restoredIP + "/lights/" + lightId + "/on=" + state;
+        String url = "http:// + " + restoredIP + ":8080/lights/" + lightId; //+ "/on=" + state
         if(restoredIP != null){
             if(Patterns.IP_ADDRESS.matcher(restoredIP).matches())
-                volleyService.changeLight(url);
+                volleyService.changeLight(url, state);
             else
                 Toast.makeText(getApplication(), "Not a valid IP", Toast.LENGTH_SHORT).show();
         }
@@ -68,8 +68,8 @@ public class MainActivityVM extends AndroidViewModel implements VolleyListener
     }
 
     public void changeLightName(int lightId, String name){
-        String url = "http:// + " + IP_ADDRESS + "/lights/" + lightId + "/name=" + name;
-        volleyService.changeLight(url);
+        String url = "http:// + " + IP_ADDRESS + ":8080/lights/" + lightId + "/name=" + name;
+        volleyService.changeLight(url, true);
     }
     //endregion
 

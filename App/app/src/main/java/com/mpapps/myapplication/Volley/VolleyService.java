@@ -1,6 +1,7 @@
 package com.mpapps.myapplication.Volley;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -49,9 +50,11 @@ public class VolleyService
         requestQueue.add(request);
     }
 
-    public void changeLight(String url){
+    public void changeLight(String url, boolean state){
+        Log.i("VolleyService", url);
+        Log.i("VolleyService", getChangeLightBody(state).toString());
         JsonObjectRequest request = new JsonObjectRequest(
-                Request.Method.PUT, url, null,
+                Request.Method.PUT, url, getChangeLightBody(state),
                 response -> listener.changeLightSuccess(),
                 error -> listener.changeLightError()
         );
@@ -78,5 +81,16 @@ public class VolleyService
         }
 
         return lightModels;
+    }
+
+    private static JSONObject getChangeLightBody(boolean state){
+        JSONObject json = new JSONObject();
+        int stateText = state ? 1 : 0;
+        try {
+            json.put("status",stateText);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return json;
     }
 }
