@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -40,7 +41,7 @@ public class LightRecyclerviewAdapter extends RecyclerView.Adapter<LightRecycler
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i)
     {
         LightModel lightModel = viewModel.getLights().getValue().get(i);
-        viewHolder.cardView.setCardBackgroundColor(CardColor.valueOf(lightModel.getColor().toUpperCase()).getColor());
+        viewHolder.colorImage.setBackgroundColor(CardColor.valueOf(lightModel.getColor().toUpperCase()).getColor());
         viewHolder.lightName.setText(lightModel.getName());
         viewHolder.lightSwitch.setChecked(lightModel.isState());
     }
@@ -55,6 +56,7 @@ public class LightRecyclerviewAdapter extends RecyclerView.Adapter<LightRecycler
         CardView cardView;
         Switch lightSwitch;
         TextView lightName;
+        ImageView colorImage;
         private boolean isTouched = false;
 
         @SuppressLint("ClickableViewAccessibility")
@@ -64,6 +66,7 @@ public class LightRecyclerviewAdapter extends RecyclerView.Adapter<LightRecycler
             cardView = itemView.findViewById(R.id.recyclerview_item_card);
             lightSwitch = itemView.findViewById(R.id.recyclerview_item_state);
             lightName = itemView.findViewById(R.id.recyclerview_item_name);
+            colorImage = itemView.findViewById(R.id.recyclerview_item_color_image);
 
             lightSwitch.setOnTouchListener((v, event) ->
             {
@@ -75,7 +78,7 @@ public class LightRecyclerviewAdapter extends RecyclerView.Adapter<LightRecycler
                 if (isTouched) {
                     isTouched = false;
                     LightModel model = viewModel.getLights().getValue().get(getAdapterPosition());
-                    viewModel.changeLightState("", model.getId(), isChecked);
+                    viewModel.changeLightState(model.getId(), isChecked);
                 }
             });
 
