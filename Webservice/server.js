@@ -1,11 +1,9 @@
 var express = require('express');
 var bodyParser = require('body-parser');
+app = express();
 //const cors = require('cors');
 
-app = express();
-
-//Cargar rutas
-var appRoutes = require('./routes/appRoutes');
+var appRoutes = require('./routes/app_routes');
 
 
 

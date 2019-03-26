@@ -4,7 +4,8 @@
   "description": "Rest service voor domotica",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
   },
   "keywords": [
     "rest",
@@ -15,6 +16,10 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.16.4",
-    "mysql": "^2.16.0"
+    "mysql": "^2.16.0",
+    "python-shell": "^1.0.7"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.10"
   }
 }

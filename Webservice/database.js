@@ -8,5 +8,6 @@ const mc = mysql.createConnection({
 });
 
 mc.connect();
+console.log("HEre");
 
 module.exports = mc;
