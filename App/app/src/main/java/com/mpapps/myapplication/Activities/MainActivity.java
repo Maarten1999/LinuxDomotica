@@ -22,7 +22,7 @@ import android.widget.TextView;
 import com.mpapps.myapplication.R;
 import com.mpapps.myapplication.ViewModels.MainActivityVM;
 
-public class MainActivity extends AppCompatActivity implements LightRecyclerviewAdapter.ItemOnClickListener
+public class MainActivity extends AppCompatActivity implements LightRecyclerviewAdapter.ItemOnClickListener, MainActivityVM.OnLightsReceived
 {
     MainActivityVM viewModel;
     RecyclerView recyclerView;
@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements LightRecyclerview
             sharedPrefEditor.putString(SHARED_PREF_IP, "192.168.178.1").apply();
 
         viewModel = ViewModelProviders.of(this).get(MainActivityVM.class);
-
+        viewModel.setListener(this);
         viewModel.getLights().observe(this, lightModels -> {
             assert lightModels != null;
 
@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements LightRecyclerview
 
             Handler mHandler = new Handler();
             mHandler.postDelayed(()->
-                    swipeContainer.setRefreshing(false), 5000);
+                    swipeContainer.setRefreshing(false), 10000);
         });
         LayoutInflater inflater = getLayoutInflater();
         final View customView = inflater.inflate(R.layout.ip_dialog_layout, null);
@@ -99,5 +99,11 @@ public class MainActivity extends AppCompatActivity implements LightRecyclerview
     public void onItemClick()
     {
         //todo show fragment
+    }
+
+    @Override
+    public void onLightsReceived()
+    {
+        adapter.notifyDataSetChanged();
     }
 }

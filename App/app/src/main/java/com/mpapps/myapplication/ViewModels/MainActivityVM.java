@@ -6,6 +6,7 @@ import android.arch.lifecycle.MutableLiveData;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.util.Patterns;
 import android.widget.Toast;
 
@@ -21,6 +22,7 @@ public class MainActivityVM extends AndroidViewModel implements VolleyListener
 {
     private MutableLiveData<List<LightModel>> lights;
     private VolleyService volleyService;
+    private OnLightsReceived listener;
     //todo instellen van ip
     private static final String IP_ADDRESS = "192.168.178.1";
     SharedPreferences sharedPreferences;
@@ -40,10 +42,16 @@ public class MainActivityVM extends AndroidViewModel implements VolleyListener
         volleyService = VolleyService.getInstance(application, this);
     }
 
+    public void setListener(OnLightsReceived listener)
+    {
+        this.listener = listener;
+    }
+
     //region Volley request methods
     public void refreshLights(){
         String restoredIP = sharedPreferences.getString(MainActivity.SHARED_PREF_IP, null);
-        String url = "http:// + " + restoredIP + ":8080/lights";
+        String url = "http://" + restoredIP + ":8080/lights";
+        Log.i("VolleyService",url);
         if(restoredIP != null) {
             if(Patterns.IP_ADDRESS.matcher(restoredIP).matches())
                 volleyService.getLightsRequest(url);
@@ -56,7 +64,7 @@ public class MainActivityVM extends AndroidViewModel implements VolleyListener
 
     public void changeLightState(int lightId, boolean state){
         String restoredIP = sharedPreferences.getString(MainActivity.SHARED_PREF_IP, null);
-        String url = "http:// + " + restoredIP + ":8080/lights/" + lightId; //+ "/on=" + state
+        String url = "http://" + restoredIP + ":8080/lights/" + lightId; //+ "/on=" + state
         if(restoredIP != null){
             if(Patterns.IP_ADDRESS.matcher(restoredIP).matches())
                 volleyService.changeLight(url, state);
@@ -77,7 +85,8 @@ public class MainActivityVM extends AndroidViewModel implements VolleyListener
     @Override
     public void getLightsReceived(List<LightModel> lights)
     {
-        this.lights.postValue(lights);
+        this.lights.setValue(lights);
+        listener.onLightsReceived();
     }
 
     @Override
@@ -103,5 +112,9 @@ public class MainActivityVM extends AndroidViewModel implements VolleyListener
     public MutableLiveData<List<LightModel>> getLights()
     {
         return lights;
+    }
+
+    public interface OnLightsReceived{
+        void onLightsReceived();
     }
 }

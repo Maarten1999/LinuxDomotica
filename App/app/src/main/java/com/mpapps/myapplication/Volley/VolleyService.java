@@ -40,9 +40,12 @@ public class VolleyService
                 Request.Method.GET,url,null,
                 response ->
                 {
+                    Log.i("VolleyService","Received");
                     listener.getLightsReceived(parseJsonArray(response));
                 },
                 error -> {
+                    Log.i("VolleyService", error.getMessage());
+                    error.printStackTrace();
                     listener.getLightsError();
                 }
         );
@@ -71,15 +74,16 @@ public class VolleyService
                 int id = lightJson.getInt("id");
                 String name = lightJson.getString("name");
                 String color = lightJson.getString("color");
-                boolean state = lightJson.getBoolean("on");
+                int state = lightJson.getInt("status");
+                boolean status = (state == 1);
 
-                LightModel lightModel = new LightModel(id, name, color, state);
+                LightModel lightModel = new LightModel(id, name, color, status);
                 lightModels.add(lightModel);
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
+        Log.i("VolleyService", lightModels.toString());
         return lightModels;
     }
 
