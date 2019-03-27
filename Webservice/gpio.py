@@ -11,6 +11,7 @@ PIN_1 = 21
 PIN_2 = 20
 PIN_3 = 16
 PIN_4 = 12
+PIN_5 = 26
 
 def led_blink():
     while True:
@@ -32,6 +33,8 @@ def led_on(id):
         GPIO.output(PIN_3, GPIO.HIGH)
     elif id == 4:
         GPIO.output(PIN_4, GPIO.HIGH)
+    elif id == 5:
+        GPIO.output(PIN_4, GPIO.HIGH)
     return None
     
 def led_off(id):
@@ -43,11 +46,17 @@ def led_off(id):
         GPIO.output(PIN_3, GPIO.LOW)
     elif id == 4:
         GPIO.output(PIN_4, GPIO.LOW)
+    elif id == 5:
+        GPIO.output(PIN_4, GPIO.LOW)
     return None
 
 def main():
     GPIO.setmode(GPIO.BCM)
     GPIO.setup(PIN_1, GPIO.OUT)
+    GPIO.setup(PIN_2, GPIO.OUT)
+    GPIO.setup(PIN_3, GPIO.OUT)
+    GPIO.setup(PIN_4, GPIO.OUT)
+    GPIO.setup(PIN_5, GPIO.OUT)
     #GPIO.setup(PIN_1, GPIO.OUT)
     #GPIO.setup(PIN_1, GPIO.OUT)
     #GPIO.setup(PIN_1, GPIO.OUT)
